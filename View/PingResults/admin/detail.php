@@ -1,3 +1,4 @@
+<!--nocache-->
 <!-- form -->
 <h2>Ping送信結果</h2>
 
@@ -24,3 +25,4 @@
         </tr>
     </table>
 </div>
+<!--/nocache-->

@@ -1,3 +1,4 @@
+ <!--nocache-->
 <?php
 //サーバーの一覧表示
 if(empty($blogContentData['PingConfig']['server'])){
@@ -93,3 +94,4 @@ if(!empty($blogContentData['PingConfig']['id'])){
 </div>
 
 <?php echo $this->BcForm->end() ?>
+ <!--/nocache-->

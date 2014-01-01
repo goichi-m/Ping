@@ -1,3 +1,4 @@
+<!--nocache-->
 <table cellpadding="0" cellspacing="0" class="list-table" id="ListTable">
     <thead>
         <tr>
@@ -23,3 +24,4 @@
 <?php endif; ?>
     </tbody>
 </table>
+<!--/nocache-->
