@@ -14,13 +14,13 @@
         <tr>
             <th class="col-head">送信結果</th>
             <td class="col-input">
-                <?php echo $blogContentData['PingResult']['result'] ?>
+                <?php echo $resultData['PingResult']['result'] ?>
             </td>
         </tr>
         <tr>
             <th class="col-head">最終送信日</th>
             <td class="col-input">
-                <?php echo $blogContentData['PingResult']['modified'] ?>
+                <?php echo $resultData['PingResult']['modified'] ?>
             </td>
         </tr>
     </table>

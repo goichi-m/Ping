@@ -37,4 +37,12 @@ class PingConfig extends PingAppModel {
  */
 	public $plugin = 'Ping';
 
+
+    public $belongsTo = array(
+        'BlogContent' => array(
+            'className'    => 'BlogContent',
+            'foreignKey'   => 'blog_content_id'
+        )
+    );
+
 }

@@ -36,7 +36,8 @@ class PingConfigsController extends BcPluginAppController {
  * @var		array
  * @access	public
  */
-	public $components = array('BcAuth','Cookie','BcAuthConfigure','Paginator',);
+	public $components = array('BcAuth','Cookie','BcAuthConfigure','Paginator');
+
 /**
  * サブメニュー
  *
@@ -51,22 +52,7 @@ class PingConfigsController extends BcPluginAppController {
  * @access	public
  */
 	public function admin_index() {
-		//モデルをバインドしてアソシエーション
-		$this->BlogContent->bindModel(array(
-		    'hasOne' => array(
-		    'PingConfig' => array(  
-		        'className'  => 'Ping.PingConfig',  
-		        'foreignKey' => 'blog_content_id'
-		    )  
-		  )), false);
-		//データの取得
-		$this->Paginator->settings = array(
-		     'limit' => 20,
-		     'order' => array(
-		          'BlogContent.id' => 'desc'
-		      )
-		 );
-		$datas = $this->Paginator->paginate('BlogContent');
+		$datas = $this->BlogContent->find('all');
 		$this->set("datas", $datas);
 		//ページタイトル
 		$this->pageTitle = 'Ping送信設定一覧';
@@ -83,14 +69,6 @@ class PingConfigsController extends BcPluginAppController {
 			$this->setMessage('IDの取得に失敗しました。', true);
 			$this->redirect(array('controller' => 'PingConfigs' ,'action' => 'admin_index'));
 		}
-		//アソシエーション
-		$this->BlogContent->bindModel(array(
-		    'hasOne' => array(
-		    'PingConfig' => array(  
-		        'className'  => 'Ping.PingConfig',  
-		        'foreignKey' => 'blog_content_id'
-		    )  
-		  )), true);
 		//ブログデータの取得
 		$blogContentData = $this->BlogContent->find('first', array('conditions'=>array(
 			'BlogContent.id' => $blogContentID
@@ -114,7 +92,19 @@ class PingConfigsController extends BcPluginAppController {
 				$this->setMessage('データの保存に失敗しました', true);
 				$this->redirect(array('controller' => 'PingConfigs' ,'action' => 'admin_index'));
 			}
+
+		//更新実行前
+		} else {
+			//現在の設定を取得
+			$pingConfigData = $this->PingConfig->find('first', array(
+				'conditions' => array(
+					'PingConfig.blog_content_id' => $blogContentID
+				)));
+			//データ設定
+			$this->request->data = $pingConfigData;
+			$this->set('pingConfigData', $pingConfigData);
 		}
+		
 		//ページタイトル
 		$this->pageTitle = 'Ping送信設定';
 		//レンダー
@@ -134,10 +124,10 @@ class PingConfigsController extends BcPluginAppController {
 		}
 		//データ取得
 		$pingConfigData = $this->PingConfig->find('first', array('conditions' => array(
-			'id' => $pingConfigID
+			'PingConfig.id' => $pingConfigID
 		)));
 		$blogContentData = $this->BlogContent->find('first', array('conditions' => array(
-			'id' => $pingConfigData['PingConfig']['blog_content_id']
+			'BlogContent.id' => $pingConfigData['PingConfig']['blog_content_id']
 		)));
 		//取得失敗
 		if(empty($pingConfigData) || empty($blogContentData)){

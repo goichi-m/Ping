@@ -82,14 +82,7 @@ class PingResultsController extends BcPluginAppController {
             $this->setMessage('IDの取得に失敗しました。', true);
             $this->redirect(array('controller' => 'PingResults' ,'action' => 'admin_index'));
         }
-        //情報の取得
-        $this->BlogContent->bindModel(array(
-            'hasOne' => array(
-            'PingResult' => array(  
-                'className'  => 'Ping.PingResult',  
-                'foreignKey' => 'blog_content_id'
-            )  
-        )), true);
+        //情報の取得       
         $blogContentData = $this->BlogContent->find('first', array('conditions'=>array(
             'BlogContent.id' => $blogContentID
         )));
@@ -97,6 +90,7 @@ class PingResultsController extends BcPluginAppController {
             $this->setMessage('データの取得に失敗しました。', true);
             $this->redirect(array('controller' => 'PingResults' ,'action' => 'admin_index'));
         }
+        $this->set('resultData', $this->PingResult->find('first'));
         $this->set('blogContentData', $blogContentData);
         $this->pageTitle = 'Ping送信結果';
     }

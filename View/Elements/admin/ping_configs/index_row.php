@@ -1,10 +1,13 @@
 <?php
+//独自ヘルパーで設定情報を取得する。
+$configData = $this->BcBaser->getPingSetting($data['BlogContent']['id']);
+
 //表示データの整理
 //利用状態（インストール直後は空）
-if(empty($data['PingConfig']['valid'])){
+if(empty($configData['PingConfig']['valid'])){
     $valid = '利用しない';
 }else{
-    switch ($data['PingConfig']['valid']) {
+    switch ($configData['PingConfig']['valid']) {
         case 0:
             $valid = '利用しない';
             break;
@@ -17,10 +20,10 @@ if(empty($data['PingConfig']['valid'])){
     }
 }
 //更新時のPing送信（インストール直後は空）
-if(empty($data['PingConfig']['update'])){
+if(empty($configData['PingConfig']['update'])){
     $ping = '送信しない';
 }else{
-    switch ($data['PingConfig']['update']) {
+    switch ($configData['PingConfig']['update']) {
         case 0:
             $ping = '送信しない';
             break;
@@ -33,10 +36,10 @@ if(empty($data['PingConfig']['update'])){
     }
 }
 //更新日（インストール直後は空）
-if(empty($data['PingConfig']['modified'])){
+if(empty($configData['PingConfig']['modified'])){
     $modified = '未設定';
 }else{
-    $modified = date("Y年m月d日", strtotime($data['PingConfig']['modified']));
+    $modified = date("Y年m月d日", strtotime($configData['PingConfig']['modified']));
 }
 ?>
 <tr>
@@ -47,7 +50,7 @@ if(empty($data['PingConfig']['modified'])){
         if(!empty($data['PingConfig']['id'])){
             $this->BcBaser->link($this->BcBaser->getImg('admin/icn_tool_delete.png', 
                 array('width' => 24, 'height' => 24, 'alt' => '初期化', 'class' => 'btn')), 
-                array('action' => 'delete', $data['PingConfig']['id']), 
+                array('action' => 'delete', $configData['PingConfig']['id']), 
                 array('title' => '初期化', 'class' => 'btn-delete'));
             }
         ?>
