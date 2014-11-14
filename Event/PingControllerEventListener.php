@@ -147,7 +147,7 @@ class PingControllerEventListener extends BcControllerEventListener {
                                 $resultArray[0] = 'ERROR（応答なし）';
                             }
                             //結果保存用に追記する。
-                            $resultsData['PingResult']['result'] .= $target.'<br />実行結果：'.$resultArray[0].'<br /><br />';
+                            $resultsData['PingResult']['result'] .= $target.'<br />実行結果：'.$resultArray[0].'<br /><br />';                      
                         }
                         //結果の格納
                         //まずは既に結果の入ったレコードがあるかどうか確認する（最新1件のみ保存のため）
@@ -218,10 +218,8 @@ class PingControllerEventListener extends BcControllerEventListener {
      * @access  private
      */
     function __getPinServerHostName($target){
+        $target = str_replace(array("\r\n","\r","\n"), '', $target);
         $parse = parse_url($target);
-        //parse_urlを使うと、文末にアンダーコアが付加される場合があるので、
-        //これを削除する。
-        ereg_replace('_$',"",$parse['host']);
         return $parse['host'];
     }
     /**
@@ -231,8 +229,9 @@ class PingControllerEventListener extends BcControllerEventListener {
      * @access  private
      */
     function __getPinServerPath($target){
+        //改行コードがそのままパース配列に入っているので、削除する。
+        $target = str_replace(array("\r\n","\r","\n"), '', $target);
         $parse = parse_url($target);
-        ereg_replace('_$',"",$parse['path']);
         return $parse['path'];
     }
     /**
@@ -241,7 +240,7 @@ class PingControllerEventListener extends BcControllerEventListener {
      * @return  string
      * @access  private
      */
-    function __pingSending($host, $path, $title, $url){
+    function __pingSending($host, $path, $title, $url){ 
         //$hostの80番ポートへむけて以下のXMLを送信
         $sock = @fsockopen($host, 80, $errno, $errstr, 2.0);
         //戻り値格納用変数
